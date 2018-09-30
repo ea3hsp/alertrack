@@ -13,7 +13,7 @@ func NewGeo() *Geo {
 	return &Geo{}
 }
 
-// GetDistance between 2 points
+// GetDistance get the distance between 2 gps points
 func (g *Geo) GetDistance(pointA [2]float64, pointB [2]float64) float64 {
 	// source: https://www.movable-type.co.uk/scripts/latlong.html
 

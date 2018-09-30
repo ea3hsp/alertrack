@@ -131,12 +131,11 @@ func (c *Controllers) GetDistanceFromHome(driver string) (float64, error) {
 		log.Println(err)
 		return -1, err
 	}
-	//
+	// Last driver point position
 	point := rep.Rows[0].Value
-
+	// Call geo
 	geo := geo.NewGeo()
-
+	// Get distance between 2 gps points
 	distance := geo.GetDistance(point, homePoint)
 	return distance, nil
-
 }
