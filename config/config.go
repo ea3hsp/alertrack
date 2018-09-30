@@ -15,10 +15,20 @@ type DriversDB struct {
 	DBName string
 }
 
+// Home struct
+type Home struct {
+	Name    string
+	Address string
+	Zip     string
+	City    string
+	Point   [2]float64
+}
+
 // Config struct
 type Config struct {
 	Title   string
 	Drivers DriversDB `toml:"drivers-database"`
+	HomeCfg Home      `toml:"home"`
 }
 
 const cfgfilename = "alertrack.toml"
@@ -51,4 +61,9 @@ func NewConfig() (*Config, error) {
 // GetDriversDBConfig returns drivers db configuration
 func (c *Config) GetDriversDBConfig() *DriversDB {
 	return &c.Drivers
+}
+
+// GetHomeConfig returns home data location
+func (c *Config) GetHomeConfig() *Home {
+	return &c.HomeCfg
 }

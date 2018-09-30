@@ -1,4 +1,12 @@
-title = "Alertrack config file"
+title = "Alertrack"
+
+[home]
+name = ""
+address = ""
+zip = ""
+city = ""
+point = [41.364892453325226,2.158298492431641]
+
 
 [drivers-database]
 host = "10.1.2.23"

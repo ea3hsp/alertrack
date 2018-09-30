@@ -9,6 +9,7 @@ import (
 
 	"github.com/ea3hsp/alertrack/config"
 	"github.com/ea3hsp/alertrack/database"
+	"github.com/ea3hsp/alertrack/geo"
 	"github.com/ea3hsp/alertrack/models"
 )
 
@@ -92,4 +93,50 @@ func (c *Controllers) GetDriverLastLocation(driver string) ([]byte, error) {
 		return bodyBytes, nil
 	}
 	return nil, err
+}
+
+// GetDistanceFromHome get the distance from home for a driver
+func (c *Controllers) GetDistanceFromHome(driver string) (float64, error) {
+	// struct database returns
+	type response struct {
+		TotalRows int `json:"total_rows"`
+		Offset    int `json:"offset"`
+		Rows      []struct {
+			ID    string     `json:"id"`
+			Key   string     `json:"key"`
+			Value [2]float64 `json:"value"`
+		} `json:"rows"`
+	}
+	// Get config
+	config, err := config.NewConfig()
+	if err != nil {
+		log.Println(err)
+		return -1, err
+	}
+	// Get Home config
+	homeCfg := config.GetHomeConfig()
+	// Home Point
+	homePoint := homeCfg.Point
+	// Get last driver know location
+	jsonRaw, err := c.GetDriverLastLocation(driver)
+	if err != nil {
+		log.Println(err)
+		return -1, err
+	}
+	// response container
+	var rep response
+	// Unmarshal response
+	err = json.Unmarshal(jsonRaw, &rep)
+	if err != nil {
+		log.Println(err)
+		return -1, err
+	}
+	//
+	point := rep.Rows[0].Value
+
+	geo := geo.NewGeo()
+
+	distance := geo.GetDistance(point, homePoint)
+	return distance, nil
+
 }
