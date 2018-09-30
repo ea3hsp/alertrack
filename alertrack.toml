@@ -1,0 +1,6 @@
+title = "Alertrack config file"
+
+[drivers-database]
+host = "10.1.2.23"
+port = "5984"
+dbname = "drivers"
