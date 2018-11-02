@@ -1,6 +1,8 @@
 package geo
 
-import "math"
+import (
+	"math"
+)
 
 // Geo struct
 type Geo struct{}

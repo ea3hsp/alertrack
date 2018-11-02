@@ -26,7 +26,7 @@ run:
 	./$(BINARY_NAME)
 # Cross compilation
 build-linux:
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) -o $(BINARY_UNIX) -v
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) -o $(BINARY_LINUX) -v
 build-rpi:
-	CGO_ENABLED=0 GOOS=linux GOARCH=arm GOARM=5 $(GOBUILD) -o $(BINARY_RPI) -v
+	CGO_ENABLED=0 GOOS=linux GOARCH=arm GOARM=7 $(GOBUILD) -o $(BINARY_RPI) -v
 	scp $(BINARY_RPI) $(USER_RPI)@$(NAME_RPI):/home/$(USER_RPI)/bin/$(BINARY_NAME)

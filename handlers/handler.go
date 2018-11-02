@@ -10,7 +10,13 @@ import (
 	"github.com/ea3hsp/alertrack/models"
 )
 
+func enableCors(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+}
+
 func tracking(w http.ResponseWriter, r *http.Request) {
+	// Enable CORS
+	enableCors(&w)
 	// Driver location struct definition
 	var dl models.DriverLocation
 	// Decode incomming http message
@@ -24,11 +30,17 @@ func tracking(w http.ResponseWriter, r *http.Request) {
 	// Set driver location
 	controller.SetDriverLocation(dl)
 	// Returns  Status OK (200)
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
+	// Message
+	msg := `{"message": "Ok message recived. Thank you !"}`
+	w.Write([]byte(msg))
 	return
 }
 
 func lastLocation(w http.ResponseWriter, r *http.Request) {
+	// Enable CORS
+	enableCors(&w)
 	// driver query param
 	driver := r.URL.Query().Get("driver")
 	// create controller
@@ -42,6 +54,7 @@ func lastLocation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// Returns  Status OK (200)
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	// Returns last driver location
 	w.Write(location)
@@ -50,6 +63,8 @@ func lastLocation(w http.ResponseWriter, r *http.Request) {
 }
 
 func homeDistance(w http.ResponseWriter, r *http.Request) {
+	// Enable CORS
+	enableCors(&w)
 	// driver query param
 	driver := r.URL.Query().Get("driver")
 	// create controller
@@ -75,6 +90,7 @@ func homeDistance(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// Returns  Status OK (200)
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	// Returns driver distance from home
 	w.Write(jsonRaw)
@@ -84,9 +100,9 @@ func homeDistance(w http.ResponseWriter, r *http.Request) {
 // NewHandler ...
 func NewHandler() *http.ServeMux {
 	mux := http.NewServeMux()
-	mux.HandleFunc("/tracking", tracking)
-	mux.HandleFunc("/lastlocation", lastLocation)
-	mux.HandleFunc("/home/distance", homeDistance)
+	mux.HandleFunc("/api/v1/driver/tracking", tracking)
+	mux.HandleFunc("/api/v1/driver/lastlocation", lastLocation)
+	mux.HandleFunc("/api/v1/driver/distance", homeDistance)
 
 	return mux
 }
